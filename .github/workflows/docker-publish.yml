@@ -1,0 +1,27 @@
+name: Publicar imagen docker
+
+on:
+  push:
+      branches:
+          - main
+
+jobs:
+    build-and-push:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Descargar el codigo del repo
+            uses: actions/checkout@v4
+
+        - name: Iniciar sesion en dockerhub
+            uses: docker/login-action@3
+            with:
+                username: ${{ secrets.YOUR_NAME }}
+                password: ${{ secrets.DEVOPS_DOCKERHUB }}
+
+        - name: Construir y subir
+            uses: docker/build-push-action@7
+            with:
+                context: .
+                push: true
+                tags: ${{ secrets.YOUR_NAME }}/productomc:latest
